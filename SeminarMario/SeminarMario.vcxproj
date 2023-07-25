@@ -87,10 +87,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Entities.cpp" />
+    <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="pracrice.cpp" />
+    <ClCompile Include="SlimeEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Entities.h" />
+    <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Physics.h" />
+    <ClInclude Include="SlimeEntity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,10 +12,18 @@
     <ClCompile Include="Animation.cpp">
       <Filter>Practice</Filter>
     </ClCompile>
+    <ClCompile Include="Entities.cpp" />
+    <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="SlimeEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
       <Filter>Practice</Filter>
     </ClInclude>
+    <ClInclude Include="Entities.h" />
+    <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Physics.h" />
+    <ClInclude Include="SlimeEntity.h" />
   </ItemGroup>
 </Project>
