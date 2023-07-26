@@ -14,7 +14,7 @@ using namespace cv;
 
 Mat background = imread(R"(../Animations/background.png)", IMREAD_UNCHANGED);
 auto slime = CreateSlimeEnemy(R"(../Animations/SlimeOrange)");
-auto lives = { CreateLive(R"(../Animations/Live/heart.png)") };
+auto live = CreateLive();
 bool isToExit = false;
 
 
@@ -30,6 +30,7 @@ int main()
 	Point topLeft(background.size().width, background.size().height * 2.03 / 3);
 
 	slime->reset(Point(background.size().width * 2 / 3, background.size().height * 4 / 5));
+	//live->reset(Point(background.size().width, background.size().height * 2.03 / 3));
 
 	int key = idle(topLeft);
 
@@ -69,7 +70,9 @@ void show(Animation& animation, Point& topLeft, int x = 0, int y = 0) {
 
 		// @2: slime is an "EntityState" and knows how to take care of itself:
 		slime->update();
-		slime->draw(canvas);
+		slime->draw(canvas); 
+		live->update();
+		live->draw(canvas);
 
 
 		imshow("test", canvas);

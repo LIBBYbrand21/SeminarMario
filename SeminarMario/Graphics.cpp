@@ -39,9 +39,11 @@ bool SingleAnimationGraphics::update()
     return hasFinished;
 }
 
-LivesGraphics::LivesGraphics(std::string const& path)
+LivesGraphics::LivesGraphics(string const& path)
     :_singleLife(Frame(path)), _livesCount(3)
 {
+    resize(_singleLife.image, _singleLife.image, Size(_singleLife.mask.size().width / 10, _singleLife.mask.size().height / 12), 0, 0);
+    resize(_singleLife.mask, _singleLife.mask, Size(_singleLife.mask.size().width / 10, _singleLife.mask.size().height / 12), 0, 0);
 }
 
 Mat LivesGraphics::getCollisionMask()

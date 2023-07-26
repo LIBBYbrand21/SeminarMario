@@ -1,9 +1,9 @@
-#include "SlimeEntity.h"
+#include "LiveEntity.h"
 
 using namespace cv;
 using namespace std;
 
-EntityStatePtr CreateHeart()
+EntityStatePtr CreateLive()
 {
 	string path = (R"(../Animations/Live/heart.png)");
 	IGraphicsComponentPtr graphicsPtr(
