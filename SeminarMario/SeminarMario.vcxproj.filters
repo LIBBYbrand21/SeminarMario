@@ -17,6 +17,7 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="SlimeEntity.cpp" />
     <ClCompile Include="LiveEntity.cpp" />
+    <ClCompile Include="ScoreEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -27,5 +28,6 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="SlimeEntity.h" />
     <ClInclude Include="LiveEntity.h" />
+    <ClInclude Include="ScoreEntity.h" />
   </ItemGroup>
 </Project>

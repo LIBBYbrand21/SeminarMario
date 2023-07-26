@@ -4,6 +4,7 @@
 #include "SlimeEntity.h"
 #include "LiveEntity.h"
 #include "vector"
+#include "ScoreEntity.h"
 using namespace cv;
 
 #define HERO_DUCK 's'
@@ -14,7 +15,10 @@ using namespace cv;
 
 Mat background = imread(R"(../Animations/background.png)", IMREAD_UNCHANGED);
 auto slime = CreateSlimeEnemy(R"(../Animations/SlimeOrange)");
-auto live = CreateLive();
+auto live1 = CreateLive();
+auto live2 = CreateLive();
+auto live3 = CreateLive();
+auto score = CreateScore();
 bool isToExit = false;
 
 
@@ -30,7 +34,10 @@ int main()
 	Point topLeft(background.size().width, background.size().height * 2.03 / 3);
 
 	slime->reset(Point(background.size().width * 2 / 3, background.size().height * 4 / 5));
-	//live->reset(Point(background.size().width, background.size().height * 2.03 / 3));
+	live1->reset(Point(background.size().width * 9.5 / 10,/* background.size().height / 22*/30));
+	live2->reset(Point(background.size().width * 9 / 10, /* background.size().height / 22*/30));
+	live3->reset(Point(background.size().width * 8.5 / 10, /* background.size().height / 22*/30));
+	score->reset(Point(15,50));
 
 	int key = idle(topLeft);
 
@@ -71,8 +78,14 @@ void show(Animation& animation, Point& topLeft, int x = 0, int y = 0) {
 		// @2: slime is an "EntityState" and knows how to take care of itself:
 		slime->update();
 		slime->draw(canvas); 
-		live->update();
-		live->draw(canvas);
+		live1->update();
+		live1->draw(canvas);
+		live2->update();
+		live2->draw(canvas);
+		live3->update();
+		live3->draw(canvas);
+		score->update();
+		score->draw(canvas);
 
 
 		imshow("test", canvas);

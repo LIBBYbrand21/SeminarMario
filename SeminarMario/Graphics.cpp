@@ -12,8 +12,7 @@ SingleAnimationGraphics::SingleAnimationGraphics(AnimationPtr animPtr, bool isCy
 {    
 }
 
-
-cv::Mat SingleAnimationGraphics::getCollisionMask()
+Mat SingleAnimationGraphics::getCollisionMask()
 {
     return _animation->getFrame(_currFrameIdx).mask;
 }
@@ -76,7 +75,7 @@ cv::Mat ScoresGraphics::getCollisionMask()
 }
 void  ScoresGraphics::draw(cv::Mat& canvas, cv::Point const& topLeft)
 {
-    string text = "score : ";
+    string text = "score: ";
     string moreText = to_string(_score);
     text = text + moreText;
     Scalar color(0, 0, 255);
