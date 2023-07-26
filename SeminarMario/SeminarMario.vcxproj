@@ -89,6 +89,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Entities.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="LiveEntity.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="pracrice.cpp" />
     <ClCompile Include="SlimeEntity.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Entities.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="LiveEntity.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="SlimeEntity.h" />
   </ItemGroup>

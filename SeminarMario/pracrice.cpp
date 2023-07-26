@@ -2,6 +2,8 @@
 #include <opencv2/opencv.hpp>
 
 #include "SlimeEntity.h"
+#include "LiveEntity.h"
+#include "vector"
 using namespace cv;
 
 #define HERO_DUCK 's'
@@ -10,8 +12,9 @@ using namespace cv;
 #define HERO_RUN_RIGHT 'd'
 #define HERO_IDLE 'a'
 
-Mat background = imread(R"(../Animations/background.png)", cv::IMREAD_UNCHANGED);
+Mat background = imread(R"(../Animations/background.png)", IMREAD_UNCHANGED);
 auto slime = CreateSlimeEnemy(R"(../Animations/SlimeOrange)");
+auto lives = { CreateLive(R"(../Animations/Live/heart.png)") };
 bool isToExit = false;
 
 
@@ -39,6 +42,8 @@ int main()
 		case HERO_JUMP: {key = jumpRight(topLeft); break; }
 		case HERO_RUN_RIGHT: {key = walkRight(topLeft); break; }
 		case HERO_IDLE: {key = idle(topLeft); break; }
+			default:
+				key = waitKey(100);
 		}
 	}
 
@@ -73,14 +78,14 @@ void show(Animation& animation, Point& topLeft, int x = 0, int y = 0) {
 }
 
 int walkRight(Point& topLeft) {
-	int x;
+	int x=-1;
 	Animation animation(R"(../Animations/Hero/runRight)");
 	int key = waitKey(100);
 	while (key == -1) {
-		show(animation, topLeft, background.size().width/ animation.numFrames());
+		show(animation, topLeft, background.size().width / 10 / animation.numFrames());
 		int key = waitKey(100);
 		if (key > 0) {
-			 x = key;
+			x = key;
 			break;
 		}
 	}
@@ -88,7 +93,7 @@ int walkRight(Point& topLeft) {
 }
 
 int idle(Point& topLeft) {
-	int x=-1;
+	int x = -1;
 	Animation animation(R"(../Animations/Hero/idle)");
 	int key = waitKey(100);
 	while (key == -1) {
@@ -124,7 +129,7 @@ int duck(Point& topLeft)
 		if (key == 27) {
 			x = key;
 			isToExit = true;
-			break;
+			return x;
 		}
 	}
 	animation = Animation(R"(../Animations/Hero/standAfterDuck)");

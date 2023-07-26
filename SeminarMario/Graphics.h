@@ -52,7 +52,7 @@ protected:
 
 public:
 	// @2: Write a c'tor
-	LivesGraphics(Frame _singleLife);
+	LivesGraphics(std::string const& folder);
 
 public:
 	virtual cv::Mat getCollisionMask();
@@ -77,7 +77,7 @@ private:
 
 public:
 	// @2: Write a c'tor
-	ScoresGraphics(float _fontScale, int _fontFace);
+	ScoresGraphics(float fontScale, int fontFace);
 public:
 	virtual cv::Mat getCollisionMask();
 	virtual void draw(cv::Mat& canvas, cv::Point const& topLeft);

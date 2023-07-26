@@ -68,3 +68,65 @@ cv::Mat const& FixedWidgetPhysics::getCollisionMask() const
 {
 	return _mask;
 }
+
+ConstVelocityPhysics::ConstVelocityPhysics(cv::Point const& velocity)
+	:_velocity(velocity)
+{
+}
+
+void ConstVelocityPhysics::reset(cv::Point const& tl)
+{
+	_currTL = tl;
+}
+
+bool ConstVelocityPhysics::update(cv::Mat const& collisionMask)
+{
+	_currTL = _currTL + _velocity;
+	return false;
+}
+
+cv::Mat const& ConstVelocityPhysics::getCollisionMask() const
+{
+	// TODO: insert return statement here
+	return _mask;
+}
+
+bool ConstVelocityPhysics::checkCollision(IPhysicsComponentPtr const& other) const
+{
+	return false;
+}
+
+cv::Point const& ConstVelocityPhysics::getTL() const
+{
+	return _currTL;// TODO: insert return statement here
+}
+
+JumpPhysics::JumpPhysics(int horizontalVelocity, int initialVerticalVelocity, int gravity)
+{
+}
+
+void JumpPhysics::reset(cv::Point const& tl)
+{
+}
+
+bool JumpPhysics::update(cv::Mat const& collisionMask)
+{
+	return false;
+}
+
+cv::Mat const& JumpPhysics::getCollisionMask() const
+{
+	return cv::Mat();
+	// TODO: insert return statement here
+}
+
+bool JumpPhysics::checkCollision(IPhysicsComponentPtr const& other) const
+{
+	return false;
+}
+
+cv::Point const& JumpPhysics::getTL() const
+{
+	return cv::Point();
+	// TODO: insert return statement here
+}

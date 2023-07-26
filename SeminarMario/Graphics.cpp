@@ -39,42 +39,54 @@ bool SingleAnimationGraphics::update()
     return hasFinished;
 }
 
-LivesGraphics::LivesGraphics(Frame _single)
-    :_singleLife(_single), _livesCount(3)
+LivesGraphics::LivesGraphics(std::string const& path)
+    :_singleLife(Frame(path)), _livesCount(3)
 {
 }
 
-cv::Mat LivesGraphics::getCollisionMask()
+Mat LivesGraphics::getCollisionMask()
 {
-    return cv::Mat();
+    return _singleLife.mask;
 }
 
 void LivesGraphics::draw(cv::Mat& canvas, cv::Point const& topLeft)
 {
+    drawFrame(_singleLife, canvas, topLeft);
 }
 
 void LivesGraphics::reset(int code)
 {
+    _livesCount = code;
 }
 
 bool LivesGraphics::update()
 {
-    return false;
+    return true;
 }
 
-ScoresGraphics::ScoresGraphics(float _Scale, int _Face)
-    :_fontScale(_Scale),_fontFace(_Face)
+ScoresGraphics::ScoresGraphics(float fontScale, int fontFace)
+    :_fontScale(fontScale), _fontFace(fontFace), _score(0)
 {
 }
 cv::Mat ScoresGraphics::getCollisionMask()
 {
     return cv::Mat();
 }
-void ScoresGraphics::draw(cv::Mat& canvas, cv::Point const& topLeft)
+void  ScoresGraphics::draw(cv::Mat& canvas, cv::Point const& topLeft)
 {
+    string text = "score : ";
+    string moreText = to_string(_score);
+    text = text + moreText;
+    Scalar color(0, 0, 255);
+    int thickness = 2;
+    int lineType = FILLED;
+    putText(canvas, text, topLeft, _fontFace, _fontScale, color, thickness, lineType);
+    imshow("test", canvas);
+    waitKey();
 }
 void ScoresGraphics::reset(int code)
 {
+    _score = code;
 }
 bool ScoresGraphics::update()
 {

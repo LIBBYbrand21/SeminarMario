@@ -16,6 +16,7 @@
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="SlimeEntity.cpp" />
+    <ClCompile Include="LiveEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -25,5 +26,6 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="SlimeEntity.h" />
+    <ClInclude Include="LiveEntity.h" />
   </ItemGroup>
 </Project>
