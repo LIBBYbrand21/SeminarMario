@@ -31,9 +31,9 @@ int main()
 	auto slimeState = CreateSlimeEnemy(R"(../Animations/SlimeOrange)");
 	slimeState->reset(Point(background.size().width * 2 / 3, background.size().height * 4 / 5));
 	
+
 	EntityPtr hero = createHero(R"(../Animations/Hero)");
-	hero->reset(Point(background.size().width / 2, background.size().height * 2 / 3));
-	
+	hero->reset(Point(background.size().width / 2, background.size().height * 2.03 / 3));
 
 	EntityPtr slime(new Entity(slimeState));
 	Timer timer(/*freq. ms=*/100);

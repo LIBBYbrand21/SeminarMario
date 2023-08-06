@@ -4,6 +4,12 @@
     <Filter Include="Practice">
       <UniqueIdentifier>{fa13f3d5-7199-4a36-a323-b72e0c5a39a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{ba9e496a-18fc-4c65-aa81-62263fd3a0d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Infrastructure">
+      <UniqueIdentifier>{52bec545-b271-49d1-b0e1-6c49792c0a5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pracrice.cpp">
@@ -12,29 +18,65 @@
     <ClCompile Include="Animation.cpp">
       <Filter>Practice</Filter>
     </ClCompile>
-    <ClCompile Include="Entities.cpp" />
-    <ClCompile Include="Graphics.cpp" />
-    <ClCompile Include="Physics.cpp" />
-    <ClCompile Include="SlimeEntity.cpp" />
-    <ClCompile Include="LiveEntity.cpp" />
-    <ClCompile Include="ScoreEntity.cpp" />
-    <ClCompile Include="HeroEntity.cpp" />
-    <ClCompile Include="Observer.cpp" />
-    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="HeroEntity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="LiveEntity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreEntity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="SlimeEntity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities.cpp">
+      <Filter>Infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Practice</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
       <Filter>Practice</Filter>
     </ClInclude>
-    <ClInclude Include="Entities.h" />
-    <ClInclude Include="Graphics.h" />
-    <ClInclude Include="Physics.h" />
-    <ClInclude Include="SlimeEntity.h" />
-    <ClInclude Include="LiveEntity.h" />
-    <ClInclude Include="ScoreEntity.h" />
-    <ClInclude Include="Config.h" />
-    <ClInclude Include="HeroEntity.h" />
-    <ClInclude Include="Observer.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="HeroEntity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="LiveEntity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreEntity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="SlimeEntity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Practice</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

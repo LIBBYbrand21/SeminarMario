@@ -80,11 +80,11 @@ void ConstVelocityPhysics::reset(cv::Point const& tl)
 	_currTL = tl;
 }
 
-bool ConstVelocityPhysics::update(cv::Mat const& collisionMask)
-{
-	_mask = collisionMask;
-	_currTL += _velocity;
-	return false;
+bool ConstVelocityPhysics::update(cv::Mat const& collisionMask) {
+	this->_mask = collisionMask;
+	this->_currTL.x += this->_velocity.x;
+	this->_currTL.y += this->_velocity.y;
+	return true;
 }
 
 cv::Mat const& ConstVelocityPhysics::getCollisionMask() const
@@ -105,30 +105,44 @@ cv::Point const& ConstVelocityPhysics::getTL() const
 
 JumpPhysics::JumpPhysics(int horizontalVelocity, int initialVerticalVelocity, int gravity)
 {
+	this->_initialJumpVelocity.x = horizontalVelocity;
+	this->_initialJumpVelocity.y = initialVerticalVelocity;
+	this->_gravity = gravity;
+	this->_currVelocity.x = horizontalVelocity;
+	this->_currVelocity.y = initialVerticalVelocity;
 }
 
 void JumpPhysics::reset(cv::Point const& tl)
 {
+	//in the middle of the jump , sould not reset the jump startTL
+
+	this->_jumpStartTL = tl;
+	this->_currVelocity.y = this->_initialJumpVelocity.y;
+	this->_currVelocity.x = this->_initialJumpVelocity.x;
+	this->_currTL = tl;
+
 }
 
 bool JumpPhysics::update(cv::Mat const& collisionMask)
 {
-	return false;
+	this->_mask = collisionMask;
+	_currTL.x += +_currVelocity.x;
+	_currTL.y -= _currVelocity.y;
+	_currVelocity.y -= _gravity;
+	return  this->_currTL.y == this->_jumpStartTL.y;
 }
 
-cv::Mat const& JumpPhysics::getCollisionMask() const
+Mat const& JumpPhysics::getCollisionMask() const
 {
-	return cv::Mat();
-	// TODO: insert return statement here
+	return this->_mask;
 }
 
 bool JumpPhysics::checkCollision(IPhysicsComponentPtr const& other) const
 {
-	return false;
+	return checkPixelLevelCollision(this, other);
 }
 
-cv::Point const& JumpPhysics::getTL() const
+Point const& JumpPhysics::getTL() const
 {
-	return cv::Point();
-	// TODO: insert return statement here
+	return this->_currTL;
 }
