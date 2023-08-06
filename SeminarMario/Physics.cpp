@@ -69,8 +69,9 @@ cv::Mat const& FixedWidgetPhysics::getCollisionMask() const
 	return _mask;
 }
 
+/// ////////////////////////////////////////////////////
 ConstVelocityPhysics::ConstVelocityPhysics(cv::Point const& velocity)
-	:_velocity(velocity)
+	:_currTL(0, 0), _velocity(velocity)
 {
 }
 
@@ -81,7 +82,8 @@ void ConstVelocityPhysics::reset(cv::Point const& tl)
 
 bool ConstVelocityPhysics::update(cv::Mat const& collisionMask)
 {
-	_currTL = _currTL + _velocity;
+	_mask = collisionMask;
+	_currTL += _velocity;
 	return false;
 }
 
@@ -93,7 +95,7 @@ cv::Mat const& ConstVelocityPhysics::getCollisionMask() const
 
 bool ConstVelocityPhysics::checkCollision(IPhysicsComponentPtr const& other) const
 {
-	return false;
+	return checkPixelLevelCollision(this, other);
 }
 
 cv::Point const& ConstVelocityPhysics::getTL() const

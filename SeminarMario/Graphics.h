@@ -67,6 +67,7 @@ public:
 // See the following function in the cpp file:
 void exampleOfPutText();
 // for documentation and usage example. now fill in the class ! :)
+
 class ScoresGraphics : public IGraphicsComponent
 {
 private:

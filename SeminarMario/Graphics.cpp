@@ -12,7 +12,8 @@ SingleAnimationGraphics::SingleAnimationGraphics(AnimationPtr animPtr, bool isCy
 {    
 }
 
-Mat SingleAnimationGraphics::getCollisionMask()
+
+cv::Mat SingleAnimationGraphics::getCollisionMask()
 {
     return _animation->getFrame(_currFrameIdx).mask;
 }
@@ -37,7 +38,6 @@ bool SingleAnimationGraphics::update()
 
     return hasFinished;
 }
-
 LivesGraphics::LivesGraphics(string const& path)
     :_singleLife(Frame(path)), _livesCount(3)
 {
@@ -69,7 +69,7 @@ ScoresGraphics::ScoresGraphics(float fontScale, int fontFace)
     :_fontScale(fontScale), _fontFace(fontFace), _score(0)
 {
 }
-cv::Mat ScoresGraphics::getCollisionMask()
+Mat ScoresGraphics::getCollisionMask()
 {
     return cv::Mat();
 }
@@ -93,6 +93,7 @@ bool ScoresGraphics::update()
 {
     return false;
 }
+
 //////////////////////////////////////////////////
 
 void exampleOfPutText()

@@ -18,6 +18,9 @@
     <ClCompile Include="SlimeEntity.cpp" />
     <ClCompile Include="LiveEntity.cpp" />
     <ClCompile Include="ScoreEntity.cpp" />
+    <ClCompile Include="HeroEntity.cpp" />
+    <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -29,5 +32,9 @@
     <ClInclude Include="SlimeEntity.h" />
     <ClInclude Include="LiveEntity.h" />
     <ClInclude Include="ScoreEntity.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="HeroEntity.h" />
+    <ClInclude Include="Observer.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
 </Project>
