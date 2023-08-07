@@ -3,11 +3,17 @@
 using namespace cv;
 using namespace std;
 
-EntityStatePtr CreateLive()
+EntityStatePtr CreateLiveState(std::string const& animationFolder)
 {
-	string path = (R"(../Animations/Live/heart.png)");
 	IGraphicsComponentPtr graphicsPtr(
-		new LivesGraphics(path));
+		new LivesGraphics(animationFolder));
 	IPhysicsComponentPtr physicsPtr = make_shared<FixedWidgetPhysics>();
 	return make_shared<EntityState>(graphicsPtr, physicsPtr);
+}
+
+EntityPtr createLive(std::string const& animationFolder)
+{
+	auto live = CreateLiveState(animationFolder);
+	EntityPtr liveEntity(new Entity(live));
+	return liveEntity;
 }

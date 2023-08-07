@@ -2,4 +2,4 @@
 #pragma once
 #include "Entities.h"
 
-EntityStatePtr CreateScore();
+EntityPtr CreateScore();

@@ -47,6 +47,37 @@ public:
 	virtual cv::Point const& getTL() const override;
 };
 
+// Liskov Open Closed Principle
+// Decorator Design Pattern
+class NonCollidingPhysicsDecorator : public IPhysicsComponent
+{
+private:
+	IPhysicsComponentPtr _base;
+
+public:
+	NonCollidingPhysicsDecorator(IPhysicsComponentPtr base);
+
+	// Inherited via IPhysicsComponent
+	virtual void reset(cv::Point const& tl) override;
+	virtual bool update(cv::Mat const& collisionMask) override;
+	virtual cv::Mat const& getCollisionMask() const override;
+	virtual bool checkCollision(std::shared_ptr<IPhysicsComponent> const& other) const override;
+	virtual cv::Point const& getTL() const override;
+
+};
+
+class BoundedPhysicsDecorator : public IPhysicsComponent
+{
+private:
+	cv::Rect _bounds;
+	IPhysicsComponentPtr _base;
+
+public:
+	BoundedPhysicsDecorator(IPhysicsComponentPtr base);
+	void test();
+	// TODO:
+};
+
 // physics of moving with const velocity.
 // @2: Implement. HINT! right click on some function that has this green line beneath it, 
 // choose "Quick actions and Refactoring" --> "Create Definition.. " 

@@ -1,12 +1,10 @@
 #include "SlimeEntity.h"
+#include <memory>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 using namespace cv;
 using namespace std;
-
-EntityPtr createSlime(std::string const& animationFolder)
-{
-	return EntityPtr();
-}
 
 EntityStatePtr CreateSlimeEnemy(std::string const& animationFolder)
 {
@@ -16,7 +14,17 @@ EntityStatePtr CreateSlimeEnemy(std::string const& animationFolder)
 	IGraphicsComponentPtr graphicsPtr(
 		new SingleAnimationGraphics(animation, isCyclic));
 
-	IPhysicsComponentPtr physicsPtr = make_shared<FixedWidgetPhysics>();
+	IPhysicsComponentPtr nonCollidingPhysicsPtr =
+		make_shared<NonCollidingPhysicsDecorator>(
+			make_shared<FixedWidgetPhysics>());
 
-	return make_shared<EntityState>(graphicsPtr, physicsPtr);
+	return make_shared<EntityState>(graphicsPtr, nonCollidingPhysicsPtr);
 }
+
+EntityPtr createSlime(std::string const& animationFolder)
+{
+	auto slime = CreateSlimeEnemy(animationFolder);
+	EntityPtr slimeEntity(new Entity(slime));
+	return slimeEntity;
+}
+

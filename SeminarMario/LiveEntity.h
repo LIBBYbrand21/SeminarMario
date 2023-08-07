@@ -1,4 +1,4 @@
 #pragma once
 #include "Entities.h"
 
-EntityStatePtr CreateLive();
+EntityPtr createLive(std::string const& animationFolder);

@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Day5\EntitiesPool.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Entities.cpp" />
     <ClCompile Include="Graphics.cpp" />
@@ -100,6 +101,7 @@
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Day5\EntitiesPool.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Entities.h" />

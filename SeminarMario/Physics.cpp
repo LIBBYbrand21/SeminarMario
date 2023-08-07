@@ -81,10 +81,9 @@ void ConstVelocityPhysics::reset(cv::Point const& tl)
 }
 
 bool ConstVelocityPhysics::update(cv::Mat const& collisionMask) {
-	this->_mask = collisionMask;
-	this->_currTL.x += this->_velocity.x;
-	this->_currTL.y += this->_velocity.y;
-	return true;
+	_mask = collisionMask;
+	_currTL += _velocity;
+	return false;
 }
 
 cv::Mat const& ConstVelocityPhysics::getCollisionMask() const
@@ -101,6 +100,48 @@ bool ConstVelocityPhysics::checkCollision(IPhysicsComponentPtr const& other) con
 cv::Point const& ConstVelocityPhysics::getTL() const
 {
 	return _currTL;// TODO: insert return statement here
+}
+
+NonCollidingPhysicsDecorator::NonCollidingPhysicsDecorator(IPhysicsComponentPtr base)
+	:_base(base)
+{
+}
+
+void NonCollidingPhysicsDecorator::reset(cv::Point const& tl)
+{
+	_base->reset(tl);
+}
+
+bool NonCollidingPhysicsDecorator::update(cv::Mat const& collisionMask)
+{
+	return _base->update(collisionMask);
+}
+
+cv::Mat const& NonCollidingPhysicsDecorator::getCollisionMask() const
+{
+	return Mat();
+}
+
+bool NonCollidingPhysicsDecorator::checkCollision(std::shared_ptr<IPhysicsComponent> const& other) const
+{
+	return false;
+}
+
+cv::Point const& NonCollidingPhysicsDecorator::getTL() const
+{
+	return _base->getTL();
+}
+
+BoundedPhysicsDecorator::BoundedPhysicsDecorator(IPhysicsComponentPtr base)
+:_base(base)
+{
+}
+
+void BoundedPhysicsDecorator::test()
+{
+	//_bounds.contains() ;
+	if (_base->getTL().x < _bounds.x + _bounds.width - _base->getCollisionMask().size().width)
+		_base->reset(Point(0,0));
 }
 
 JumpPhysics::JumpPhysics(int horizontalVelocity, int initialVerticalVelocity, int gravity)

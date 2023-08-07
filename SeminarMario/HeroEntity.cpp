@@ -34,6 +34,8 @@ EntityStatePtr createHeroState(
 		new SingleAnimationGraphics(animation, isCyclic));
 
 	IPhysicsComponentPtr physicsPtr = nullptr;
+	
+
 	Size frameSize = graphicsPtr->getCollisionMask().size();
 	switch (state)
 	{
@@ -66,6 +68,7 @@ EntityStatePtr createHeroState(
 	default:
 		throw std::exception("Unknown physics state!");
 	}
+	//IPhysicsComponentPtr BoundedphysicsPtr(new BoundedPhysicsDecorator(physicsPtr));
 
 	return make_shared<EntityState>(graphicsPtr, physicsPtr);
 }

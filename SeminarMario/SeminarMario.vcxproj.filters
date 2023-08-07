@@ -45,6 +45,9 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Practice</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Day5\EntitiesPool.cpp">
+      <Filter>Infrastructure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -76,6 +79,9 @@
       <Filter>Infrastructure</Filter>
     </ClInclude>
     <ClInclude Include="Physics.h">
+      <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Day5\EntitiesPool.h">
       <Filter>Infrastructure</Filter>
     </ClInclude>
   </ItemGroup>
