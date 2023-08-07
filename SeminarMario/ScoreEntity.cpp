@@ -3,17 +3,17 @@
 using namespace cv;
 using namespace std;
 
-EntityStatePtr CreateScoreState()
+EntityStatePtr createScoreState()
 {
 	IGraphicsComponentPtr graphicsPtr(
-		new ScoresGraphics(/*FONT_HERSHEY_SIMPLEX FONT_HERSHEY_COMPLEX,*/ FONT_HERSHEY_DUPLEX, 0.5));
+		new ScoresGraphics(/*FONT_HERSHEY_SIMPLEX FONT_HERSHEY_COMPLEX,*/ FONT_HERSHEY_DUPLEX, 5));
 	IPhysicsComponentPtr physicsPtr = make_shared<FixedWidgetPhysics>();
 	return make_shared<EntityState>(graphicsPtr, physicsPtr);
 }
 
 EntityPtr CreateScore()
 {
-	auto score = CreateScoreState();
-	EntityPtr scoreEntity(new Entity(score));
-	return scoreEntity;
+	auto scoreState = createScoreState();
+	EntityPtr score(new Entity(scoreState));
+	return score;
 }

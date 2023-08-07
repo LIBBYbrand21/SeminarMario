@@ -34,14 +34,14 @@ int main()
 	EntityPtr slime = createSlime(R"(../Animations/SlimeOrange)");
 	slime->reset(Point(background.size().width * 2 / 3, background.size().height * 4 / 5));
 
-	/*EntityPtr score = CreateScore();
-	score->reset(Point(background.size().width * 0.02, background.size().height * 0.08));*/
+	EntityPtr live = createLive(R"(../Animations/Live/heart.png)");
+	live->reset(Point(background.size().width * 0.99, background.size().height * 0.03));
 
+	EntityPtr score = CreateScore();
+	score->reset(Point(background.size().width * 0.01, background.size().height * 0.05));
+	
 	EntityPtr hero = createHero(R"(../Animations/Hero)");
 	hero->reset(Point(background.size().width / 2, background.size().height * 2.03 / 3));
-
-	/*EntityPtr live = createLive(R"(../Animations/Live)");
-	live->reset(Point(background.size().width * 9.5 / 10, background.size().height * 0.03));*/
 
 	Timer timer(/*freq. ms=*/100);
 	timer.Register(slime);
@@ -56,8 +56,8 @@ int main()
 
 		timer.tick();
 		slime->draw(canvas);
-		//live->draw(canvas);
-		//score->draw(canvas);
+		live->draw(canvas);
+		score->draw(canvas);
 		hero->draw(canvas);
 
 		imshow("test", canvas);

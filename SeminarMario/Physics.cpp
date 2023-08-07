@@ -86,7 +86,7 @@ bool ConstVelocityPhysics::update(cv::Mat const& collisionMask) {
 	return false;
 }
 
-cv::Mat const& ConstVelocityPhysics::getCollisionMask() const
+Mat const& ConstVelocityPhysics::getCollisionMask() const
 {
 	// TODO: insert return statement here
 	return _mask;
@@ -97,7 +97,7 @@ bool ConstVelocityPhysics::checkCollision(IPhysicsComponentPtr const& other) con
 	return checkPixelLevelCollision(this, other);
 }
 
-cv::Point const& ConstVelocityPhysics::getTL() const
+Point const& ConstVelocityPhysics::getTL() const
 {
 	return _currTL;// TODO: insert return statement here
 }
@@ -127,13 +127,13 @@ bool NonCollidingPhysicsDecorator::checkCollision(std::shared_ptr<IPhysicsCompon
 	return false;
 }
 
-cv::Point const& NonCollidingPhysicsDecorator::getTL() const
+Point const& NonCollidingPhysicsDecorator::getTL() const
 {
 	return _base->getTL();
 }
 
 BoundedPhysicsDecorator::BoundedPhysicsDecorator(IPhysicsComponentPtr base)
-:_base(base)
+	:_base(base), _bounds(cv::Rect(Point(0,0),Point(0,100)))
 {
 }
 
@@ -141,7 +141,34 @@ void BoundedPhysicsDecorator::test()
 {
 	//_bounds.contains() ;
 	if (_base->getTL().x < _bounds.x + _bounds.width - _base->getCollisionMask().size().width)
-		_base->reset(Point(0,0));
+		_base->reset(Point(0,_base->getTL().y));
+}
+
+void BoundedPhysicsDecorator::reset(cv::Point const& tl)
+{
+	_base->reset(tl);
+}
+
+bool BoundedPhysicsDecorator::update(cv::Mat const& collisionMask)
+{
+	return false;
+}
+
+cv::Mat const& BoundedPhysicsDecorator::getCollisionMask() const
+{
+	return Mat();
+	// TODO: insert return statement here
+}
+
+bool BoundedPhysicsDecorator::checkCollision(std::shared_ptr<IPhysicsComponent> const& other) const
+{
+	return false;
+}
+
+cv::Point const& BoundedPhysicsDecorator::getTL() const
+{
+	return _bounds.tl();
+	// TODO: insert return statement here
 }
 
 JumpPhysics::JumpPhysics(int horizontalVelocity, int initialVerticalVelocity, int gravity)
@@ -157,20 +184,23 @@ void JumpPhysics::reset(cv::Point const& tl)
 {
 	//in the middle of the jump , sould not reset the jump startTL
 
-	this->_jumpStartTL = tl;
-	this->_currVelocity.y = this->_initialJumpVelocity.y;
-	this->_currVelocity.x = this->_initialJumpVelocity.x;
-	this->_currTL = tl;
-
+	_jumpStartTL = tl;
+	_currVelocity = _initialJumpVelocity;
+	_currTL = tl;
 }
 
 bool JumpPhysics::update(cv::Mat const& collisionMask)
 {
-	this->_mask = collisionMask;
+	/*cout << _gravity<<endl;
+	_currTL += _currVelocity;
+	_currVelocity.y -= _gravity;
+	_gravity--;
+	return  _currTL.y == _jumpStartTL.y;*/
+	_mask = collisionMask;
 	_currTL.x += +_currVelocity.x;
 	_currTL.y -= _currVelocity.y;
 	_currVelocity.y -= _gravity;
-	return  this->_currTL.y == this->_jumpStartTL.y;
+	return  _currTL.y == _jumpStartTL.y;
 }
 
 Mat const& JumpPhysics::getCollisionMask() const

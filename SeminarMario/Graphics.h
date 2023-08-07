@@ -86,3 +86,17 @@ public:
 	virtual void reset(int code = 0) override;
 	virtual bool update();
 };
+
+class EmptyGraphicsDecorator : public IGraphicsComponent
+{
+private:
+	cv::Point _point;
+public:
+	EmptyGraphicsDecorator();
+	// Inherited via IPhysicsComponent
+public:
+	virtual cv::Mat getCollisionMask();
+	virtual void draw(cv::Mat& canvas, cv::Point const& topLeft);
+	virtual void reset(int code = 0) override;
+	virtual bool update();
+};

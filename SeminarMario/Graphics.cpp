@@ -5,13 +5,12 @@ using namespace cv;
 using namespace std;
 
 //////////////////////////////////////////////////
-
+//SingleAnimationGraphics
 SingleAnimationGraphics::SingleAnimationGraphics(AnimationPtr animPtr, bool isCyclic)
     :_animation(animPtr), _currFrameIdx(0)
     , _isCyclic(isCyclic)
 {    
 }
-
 
 cv::Mat SingleAnimationGraphics::getCollisionMask()
 {
@@ -38,11 +37,13 @@ bool SingleAnimationGraphics::update()
 
     return hasFinished;
 }
+
+//LivesGraphics
 LivesGraphics::LivesGraphics(string const& path)
     :_singleLife(Frame(path)), _livesCount(3)
 {
-    resize(_singleLife.image, _singleLife.image, Size(_singleLife.mask.size().width / 10, _singleLife.mask.size().height / 12), 0, 0);
-    resize(_singleLife.mask, _singleLife.mask, Size(_singleLife.mask.size().width / 10, _singleLife.mask.size().height / 12), 0, 0);
+    resize(_singleLife.image, _singleLife.image, Size(_singleLife.mask.size().width / 10, _singleLife.mask.size().height / 10), 0, 0);
+    resize(_singleLife.mask, _singleLife.mask, Size(_singleLife.mask.size().width / 10, _singleLife.mask.size().height / 10), 0, 0);
 }
 
 Mat LivesGraphics::getCollisionMask()
@@ -52,26 +53,34 @@ Mat LivesGraphics::getCollisionMask()
 
 void LivesGraphics::draw(cv::Mat& canvas, cv::Point const& topLeft)
 {
-    drawFrame(_singleLife, canvas, topLeft);
+    Point curr_topleft = topLeft;
+    for (int i = 0; i < _livesCount; i++)
+    {
+        curr_topleft.x -= _singleLife.image.cols * 0.9;
+        drawFrame(_singleLife, canvas, curr_topleft);
+    }
+    //drawFrame(_singleLife, canvas, topLeft);
 }
 
 void LivesGraphics::reset(int code)
 {
-    _livesCount = code;
+    _livesCount = 3;
 }
 
 bool LivesGraphics::update()
 {
-    return true;
+    _livesCount--;
+    return false;
 }
 
+//ScoresGraphics
 ScoresGraphics::ScoresGraphics(float fontScale, int fontFace)
     :_fontScale(fontScale), _fontFace(fontFace), _score(0)
 {
 }
 Mat ScoresGraphics::getCollisionMask()
 {
-    return cv::Mat();
+    return Mat();
 }
 void  ScoresGraphics::draw(cv::Mat& canvas, cv::Point const& topLeft)
 {
@@ -83,7 +92,6 @@ void  ScoresGraphics::draw(cv::Mat& canvas, cv::Point const& topLeft)
     int lineType = FILLED;
     putText(canvas, text, topLeft, _fontFace, _fontScale, color, thickness, lineType);
     imshow("test", canvas);
-    waitKey();
 }
 void ScoresGraphics::reset(int code)
 {
@@ -91,7 +99,32 @@ void ScoresGraphics::reset(int code)
 }
 bool ScoresGraphics::update()
 {
-    return false;
+    _score += 10;
+    return true;
+}
+
+EmptyGraphicsDecorator::EmptyGraphicsDecorator()
+{
+}
+
+cv::Mat EmptyGraphicsDecorator::getCollisionMask()
+{
+    return cv::Mat();
+}
+
+void EmptyGraphicsDecorator::draw(cv::Mat& canvas, cv::Point const& topLeft)
+{
+    return;
+}
+
+void EmptyGraphicsDecorator::reset(int code)
+{
+    return;
+}
+
+bool EmptyGraphicsDecorator::update()
+{
+    return true;
 }
 
 //////////////////////////////////////////////////

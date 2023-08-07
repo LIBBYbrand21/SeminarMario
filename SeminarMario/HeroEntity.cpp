@@ -16,7 +16,8 @@ enum HeroStates {
 	HERO_DUCK, 
 	HERO_STAY_DUCK, 
 	HERO_STAND_AFTER_DUCK, 
-	HERO_JUMP 
+	HERO_JUMP_RIGHT,
+	HERO_JUMP_LEFT
 };
 
 EntityStatePtr createHeroState(
@@ -27,7 +28,8 @@ EntityStatePtr createHeroState(
 	bool isNotCyclic =
 		state == HeroStates::HERO_DUCK ||
 		state == HeroStates::HERO_STAND_AFTER_DUCK ||
-		state == HeroStates::HERO_JUMP;
+		state == HeroStates::HERO_JUMP_RIGHT||
+		state == HeroStates::HERO_JUMP_LEFT;
 	bool isCyclic = !isNotCyclic;
 
 	IGraphicsComponentPtr graphicsPtr(
@@ -61,8 +63,12 @@ EntityStatePtr createHeroState(
 		physicsPtr.reset(new FixedWidgetPhysics());
 		// @4: TODO
 		break;
-	case HERO_JUMP:
-		physicsPtr.reset(new ConstVelocityPhysics(Point(frameSize.width / 10, -30)));
+	case HERO_JUMP_RIGHT:
+		physicsPtr.reset(new JumpPhysics(frameSize.width / 10, 42,7));
+		// @4: TODO
+		break;
+	case HERO_JUMP_LEFT:
+		physicsPtr.reset(new JumpPhysics(-frameSize.width / 10, 42, 7));
 		// @4: TODO
 		break;
 	default:
@@ -80,13 +86,13 @@ EntityPtr createHero(std::string const & rootAnimationsFolder)
 
 	auto idle = createHeroState(root / "idle", HeroStates::HERO_IDLE);
 	auto runRight = createHeroState(root / "runRight", HeroStates::HERO_RUN_RIGHT);
-	auto jump = createHeroState(root / "jump", HeroStates::HERO_JUMP);
+	auto jump = createHeroState(root / "jump", HeroStates::HERO_JUMP_RIGHT);
 	// @4: TOOD: add states: runLeft, duck, stayDuck, standAfterDuck
 	auto runLeft = createHeroState(root / "runLeft", HeroStates::HERO_RUN_LEFT);
 	auto duck = createHeroState(root / "duckDown", HeroStates::HERO_DUCK);
 	auto stayDuck = createHeroState(root / "duckStay", HeroStates::HERO_STAY_DUCK);
 	auto standAfterDuck = createHeroState(root / "standAfterDuck", HeroStates::HERO_STAND_AFTER_DUCK);
-	auto jumpLeft = createHeroState(root / "jumpLeft", HeroStates::HERO_JUMP);
+	auto jumpLeft = createHeroState(root / "jumpLeft", HeroStates::HERO_JUMP_LEFT);
 
 	//  @4: TOOD: add all events here... 
 	idle->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_RIGHT }, runRight);
@@ -97,6 +103,8 @@ EntityPtr createHero(std::string const & rootAnimationsFolder)
 	runRight->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_UP }, jump);
 
 	jump->addState(Event{ EventSenders::SENDER_ENTITY_STATE, EventTypes::EVENT_PHYSICS, EventCodes::ENTITY_PHYSICS_FINISHED }, idle);
+
+	jumpLeft->addState(Event{ EventSenders::SENDER_ENTITY_STATE, EventTypes::EVENT_PHYSICS, EventCodes::ENTITY_PHYSICS_FINISHED }, idle);
 
 	runLeft->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_RIGHT }, idle);
 	runLeft->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_UP }, jumpLeft);
@@ -113,6 +121,7 @@ EntityPtr createHero(std::string const & rootAnimationsFolder)
 	idle->Register(hero);
 	runRight->Register(hero);
 	jump->Register(hero);
+	jumpLeft->Register(hero);
 	//  @4: TOOD: add all states here... 
 	runLeft->Register(hero);
 	duck->Register(hero);
