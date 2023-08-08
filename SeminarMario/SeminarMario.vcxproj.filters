@@ -48,6 +48,9 @@
     <ClCompile Include="..\..\Day5\EntitiesPool.cpp">
       <Filter>Infrastructure</Filter>
     </ClCompile>
+    <ClCompile Include="AppleEntity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -83,6 +86,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Day5\EntitiesPool.h">
       <Filter>Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="AppleEntity.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

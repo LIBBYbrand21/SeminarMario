@@ -159,3 +159,30 @@ void exampleOfPutText()
     imshow("test", image);
     waitKey();//waiting forever till some key is hit.
 }
+
+AppleGraphics::AppleGraphics(std::string const& folder)
+    :_singleApple(Frame(folder))
+{
+    resize(_singleApple.image, _singleApple.image, Size(_singleApple.mask.size().width / 8, _singleApple.mask.size().height / 8), 0, 0);
+    resize(_singleApple.mask, _singleApple.mask, Size(_singleApple.mask.size().width / 8, _singleApple.mask.size().height / 8), 0, 0);
+
+}
+
+cv::Mat AppleGraphics::getCollisionMask()
+{
+    return _singleApple.mask;
+}
+
+void AppleGraphics::draw(cv::Mat& canvas, cv::Point const& topLeft)
+{
+    drawFrame(_singleApple, canvas, topLeft);
+}
+
+void AppleGraphics::reset(int code)
+{
+}
+
+bool AppleGraphics::update()
+{
+    return false;
+}

@@ -29,7 +29,7 @@ public:
 typedef std::shared_ptr<EntityState> EntityStatePtr;
 
 
-class Entity : public IObserver
+class Entity : public IObserver,public Subject
 {
 protected:
 	EntityStatePtr _state;

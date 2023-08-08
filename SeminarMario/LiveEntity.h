@@ -1,4 +1,4 @@
 #pragma once
 #include "Entities.h"
 
-EntityPtr createLive(std::string const& animationFolder);
+EntityPtr createLive(std::string const& path);

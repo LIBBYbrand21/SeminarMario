@@ -7,6 +7,8 @@
 #include "SlimeEntity.h"
 #include "LiveEntity.h"
 #include "ScoreEntity.h"
+#include "EntitiesPool.h"
+#include "AppleEntity.h"
 // @2: no need to write cv:: every time, we can just use namespace:
 using namespace cv;
 // @2: NOTE! you should "use namespace" only in cpp file, NOT in H files! (because it "passes on" with the #include statement.)
@@ -31,10 +33,8 @@ int main()
 	Mat background = imread(R"(../Animations/background.png)", IMREAD_UNCHANGED);
 	resize(background, background, cv::Size(), 0.79, 0.75);
 	
-	EntityPtr slime = createSlime(R"(../Animations/SlimeOrange)");
-	slime->reset(Point(background.size().width * 2 / 3, background.size().height * 4 / 5));
 
-	EntityPtr live = createLive(R"(../Animations/Live/heart.png)");
+	EntityPtr live = createLive(R"(../Animations/heart.png)");
 	live->reset(Point(background.size().width * 0.99, background.size().height * 0.03));
 
 	EntityPtr score = CreateScore();
@@ -43,10 +43,19 @@ int main()
 	EntityPtr hero = createHero(R"(../Animations/Hero)");
 	hero->reset(Point(background.size().width / 2, background.size().height * 2.03 / 3));
 
+	EntityPtr apple = createApple(R"(../Animations/apple2.png)");
+	apple->reset(Point(background.size().width / 2+70, background.size().height*4.4/6));
+
+	EntitiesPoolPtr slimePool= createSlimePool(R"(../Animations/SlimeOrange)",5);
+	EntityPtr slime = slimePool->getNext();
+	slime->reset(Point(background.size().width * 2 / 3, background.size().height * 4 / 5));
+
+
 	Timer timer(/*freq. ms=*/100);
+	hero->Register(live);
+	//hero->Register(slime);
+	hero->Register(score);
 	timer.Register(slime);
-	//timer.Register(live);
-	//timer.Register(score);
 	timer.Register(hero);
 
 	bool isToExit = false;
@@ -59,6 +68,7 @@ int main()
 		live->draw(canvas);
 		score->draw(canvas);
 		hero->draw(canvas);
+		apple->draw(canvas);
 
 		imshow("test", canvas);
 	}

@@ -117,7 +117,6 @@ EntityPtr createHero(std::string const & rootAnimationsFolder)
 
 	// ... 
 	EntityPtr hero(new Entity(idle));
-
 	idle->Register(hero);
 	runRight->Register(hero);
 	jump->Register(hero);

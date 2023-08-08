@@ -191,15 +191,11 @@ void JumpPhysics::reset(cv::Point const& tl)
 
 bool JumpPhysics::update(cv::Mat const& collisionMask)
 {
-	/*cout << _gravity<<endl;
-	_currTL += _currVelocity;
-	_currVelocity.y -= _gravity;
-	_gravity--;
-	return  _currTL.y == _jumpStartTL.y;*/
 	_mask = collisionMask;
-	_currTL.x += +_currVelocity.x;
+	_currTL.x += _currVelocity.x;
 	_currTL.y -= _currVelocity.y;
 	_currVelocity.y -= _gravity;
+	cout << _currVelocity.y << endl;
 	return  _currTL.y == _jumpStartTL.y;
 }
 

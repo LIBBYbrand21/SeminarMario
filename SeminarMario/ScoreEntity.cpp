@@ -1,4 +1,5 @@
 #include "ScoreEntity.h"
+#include "Config.h"
 
 using namespace cv;
 using namespace std;

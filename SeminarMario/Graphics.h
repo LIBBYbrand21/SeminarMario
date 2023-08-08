@@ -87,6 +87,21 @@ public:
 	virtual bool update();
 };
 
+class AppleGraphics : public IGraphicsComponent
+{
+protected:
+	Frame _singleApple; 
+
+public:
+	AppleGraphics(std::string const& folder);
+
+public:
+	virtual cv::Mat getCollisionMask();
+	virtual void draw(cv::Mat& canvas, cv::Point const& topLeft);
+	virtual void reset(int code = 0) override;
+	virtual bool update();
+};
+
 class EmptyGraphicsDecorator : public IGraphicsComponent
 {
 private:
