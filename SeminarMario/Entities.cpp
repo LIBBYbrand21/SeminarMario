@@ -93,3 +93,10 @@ void Entity::draw(cv::Mat& canvas)
 {
 	_state->draw(canvas);
 }
+
+//void Entity::checkCollision(EntityPtr& other) {
+//	if (this->_state->getPhysics()->checkCollision(other->_state->getPhysics())) {
+//		Notify(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY });
+//		//_state->setPhysics(make_shared<NonCollidingPhysicsDecorator>(_state->getPhysics()));
+//	}
+//}

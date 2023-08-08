@@ -133,42 +133,38 @@ Point const& NonCollidingPhysicsDecorator::getTL() const
 }
 
 BoundedPhysicsDecorator::BoundedPhysicsDecorator(IPhysicsComponentPtr base)
-	:_base(base), _bounds(cv::Rect(Point(0,0),Point(0,100)))
+	:_base(base), _bounds(Rect(0, 0, 1400, 1400)) 
 {
 }
-
-void BoundedPhysicsDecorator::test()
-{
-	//_bounds.contains() ;
-	if (_base->getTL().x < _bounds.x + _bounds.width - _base->getCollisionMask().size().width)
-		_base->reset(Point(0,_base->getTL().y));
-}
-
 void BoundedPhysicsDecorator::reset(cv::Point const& tl)
 {
 	_base->reset(tl);
 }
-
 bool BoundedPhysicsDecorator::update(cv::Mat const& collisionMask)
 {
-	return false;
+	test();
+	return _base->update(getCollisionMask());
 }
-
 cv::Mat const& BoundedPhysicsDecorator::getCollisionMask() const
 {
-	return Mat();
+	return _base->getCollisionMask();
 	// TODO: insert return statement here
 }
-
 bool BoundedPhysicsDecorator::checkCollision(std::shared_ptr<IPhysicsComponent> const& other) const
 {
-	return false;
+	return _base->checkCollision(other);
 }
-
 cv::Point const& BoundedPhysicsDecorator::getTL() const
 {
-	return _bounds.tl();
+	return _base->getTL();
 	// TODO: insert return statement here
+}
+void BoundedPhysicsDecorator::test()
+{
+
+	bool ifContains = _bounds.contains(Point(_base->getTL().x, _base->getTL().x));
+	if (!ifContains)
+		_base->reset(Point(0, _base->getTL().y));
 }
 
 JumpPhysics::JumpPhysics(int horizontalVelocity, int initialVerticalVelocity, int gravity)

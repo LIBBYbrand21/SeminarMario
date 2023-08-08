@@ -56,7 +56,6 @@
     <ClInclude Include="Animation.h">
       <Filter>Practice</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h" />
     <ClInclude Include="HeroEntity.h">
       <Filter>Entities</Filter>
     </ClInclude>
@@ -89,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="AppleEntity.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Practice</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

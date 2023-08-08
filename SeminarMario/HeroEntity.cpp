@@ -74,9 +74,9 @@ EntityStatePtr createHeroState(
 	default:
 		throw std::exception("Unknown physics state!");
 	}
-	//IPhysicsComponentPtr BoundedphysicsPtr(new BoundedPhysicsDecorator(physicsPtr));
+	IPhysicsComponentPtr BoundedphysicsPtr(new BoundedPhysicsDecorator(physicsPtr));
 
-	return make_shared<EntityState>(graphicsPtr, physicsPtr);
+	return make_shared<EntityState>(graphicsPtr, BoundedphysicsPtr);
 }
 
 EntityPtr createHero(std::string const & rootAnimationsFolder)

@@ -38,12 +38,12 @@ public:
 	Entity(EntityStatePtr state);
 
 	// Inherited via IObserver
+    //void checkCollision(EntityPtr& other);
 	virtual void onNotify(Event const& e) override;
 	virtual void reset(cv::Point const& TL);
-
 	void draw(cv::Mat& canvas);
 
 	// Prototype Design Pattern
 	//virtual std::shared_ptr<Entity> clone() = 0;
 };
-typedef std::shared_ptr< Entity> EntityPtr;
+typedef std::shared_ptr<Entity> EntityPtr;

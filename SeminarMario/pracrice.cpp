@@ -64,6 +64,7 @@ int main()
 		Mat canvas = background.clone();
 
 		timer.tick();
+		//hero->checkCollision(slime);
 		slime->draw(canvas);
 		live->draw(canvas);
 		score->draw(canvas);
