@@ -22,6 +22,7 @@ public:
 	virtual std::shared_ptr<EntityState> tryModifyState(Event const& e) const;
 
 	IPhysicsComponentPtr const& getPhysics() const;
+	void setPhysics(IPhysicsComponentPtr physics);
 	virtual void reset(cv::Point const& TL);
 
 	void draw(cv::Mat & canvas);
@@ -36,9 +37,10 @@ protected:
 
 public:
 	Entity(EntityStatePtr state);
+	typedef std::shared_ptr<Entity> EntityPtr;
 
 	// Inherited via IObserver
-    //void checkCollision(EntityPtr& other);
+	void checkCollision(EntityPtr& other);
 	virtual void onNotify(Event const& e) override;
 	virtual void reset(cv::Point const& TL);
 	void draw(cv::Mat& canvas);
@@ -47,3 +49,4 @@ public:
 	//virtual std::shared_ptr<Entity> clone() = 0;
 };
 typedef std::shared_ptr<Entity> EntityPtr;
+

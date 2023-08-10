@@ -64,14 +64,16 @@ int main()
 		Mat canvas = background.clone();
 
 		timer.tick();
-		//hero->checkCollision(slime);
 		slime->draw(canvas);
+		hero->draw(canvas);
+		hero->checkCollision(slime);
 		live->draw(canvas);
 		score->draw(canvas);
-		hero->draw(canvas);
 		apple->draw(canvas);
 
 		imshow("test", canvas);
+//		slime->checkCollision(hero);
+
 	}
 
 	return 0;

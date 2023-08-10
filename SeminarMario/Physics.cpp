@@ -59,19 +59,19 @@ bool FixedWidgetPhysics::checkCollision(IPhysicsComponentPtr const& other) const
 	return checkPixelLevelCollision(this, other);
 }
 
-cv::Point const& FixedWidgetPhysics::getTL() const
+Point const& FixedWidgetPhysics::getTL() const
 {
 	return _topLeft;
 }
 
-cv::Mat const& FixedWidgetPhysics::getCollisionMask() const
+Mat const& FixedWidgetPhysics::getCollisionMask() const
 {
 	return _mask;
 }
 
 /// ////////////////////////////////////////////////////
 ConstVelocityPhysics::ConstVelocityPhysics(cv::Point const& velocity)
-	:_currTL(0, 0), _velocity(velocity)
+	:_currTL(0, 0), _velocity(velocity), _mask()
 {
 }
 
@@ -117,7 +117,7 @@ bool NonCollidingPhysicsDecorator::update(cv::Mat const& collisionMask)
 	return _base->update(collisionMask);
 }
 
-cv::Mat const& NonCollidingPhysicsDecorator::getCollisionMask() const
+Mat const& NonCollidingPhysicsDecorator::getCollisionMask() const
 {
 	return Mat();
 }
@@ -145,7 +145,7 @@ bool BoundedPhysicsDecorator::update(cv::Mat const& collisionMask)
 	test();
 	return _base->update(getCollisionMask());
 }
-cv::Mat const& BoundedPhysicsDecorator::getCollisionMask() const
+Mat const& BoundedPhysicsDecorator::getCollisionMask() const
 {
 	return _base->getCollisionMask();
 	// TODO: insert return statement here

@@ -17,8 +17,8 @@ EntityStatePtr CreateSlimeEnemy(std::string const& animationFolder)
 	IGraphicsComponentPtr graphicsPtr(
 		new SingleAnimationGraphics(animation, isCyclic));
 
-	IPhysicsComponentPtr nonCollidingPhysicsPtr =
-		make_shared<NonCollidingPhysicsDecorator>(
+	IPhysicsComponentPtr nonCollidingPhysicsPtr/* =
+		make_shared<NonCollidingPhysicsDecorator>*/(
 			make_shared<FixedWidgetPhysics>());
 
 	return make_shared<EntityState>(graphicsPtr, nonCollidingPhysicsPtr);

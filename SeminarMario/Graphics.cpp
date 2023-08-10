@@ -69,7 +69,9 @@ void LivesGraphics::reset(int code)
 
 bool LivesGraphics::update()
 {
-    _livesCount--;
+    if (_livesCount > 0) {
+        _livesCount--;
+    }
     return false;
 }
 

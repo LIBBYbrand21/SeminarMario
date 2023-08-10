@@ -36,45 +36,45 @@ EntityStatePtr createHeroState(
 		new SingleAnimationGraphics(animation, isCyclic));
 
 	IPhysicsComponentPtr physicsPtr = nullptr;
-	
+	IPhysicsComponentPtr BoundedphysicsPtr(new BoundedPhysicsDecorator(physicsPtr));
+
 
 	Size frameSize = graphicsPtr->getCollisionMask().size();
 	switch (state)
 	{
 	case HERO_IDLE:
-		physicsPtr.reset(new FixedWidgetPhysics());
+		BoundedphysicsPtr.reset(new FixedWidgetPhysics());
 		break;
 	case HERO_RUN_RIGHT:
-		physicsPtr.reset(new ConstVelocityPhysics(Point(frameSize.width / 10, 0)));
+		BoundedphysicsPtr.reset(new BoundedPhysicsDecorator(IPhysicsComponentPtr(new ConstVelocityPhysics(Point(frameSize.width / 10, 0)))));
 		break;
 	case HERO_RUN_LEFT:
 		// @4: TODO
-		physicsPtr.reset(new ConstVelocityPhysics(Point(-frameSize.width / 10, 0)));
+		BoundedphysicsPtr.reset(new BoundedPhysicsDecorator(IPhysicsComponentPtr(new ConstVelocityPhysics(Point(-frameSize.width / 10, 0)))));
 		break;
 	case HERO_DUCK:
-		physicsPtr.reset(new FixedWidgetPhysics());
+		BoundedphysicsPtr.reset(new FixedWidgetPhysics());
 		// @4: TODO
 		break;
 	case HERO_STAY_DUCK:
-		physicsPtr.reset(new FixedWidgetPhysics());
+		BoundedphysicsPtr.reset(new FixedWidgetPhysics());
 		// @4: TODO
 		break;
 	case HERO_STAND_AFTER_DUCK:
-		physicsPtr.reset(new FixedWidgetPhysics());
+		BoundedphysicsPtr.reset(new FixedWidgetPhysics());
 		// @4: TODO
 		break;
 	case HERO_JUMP_RIGHT:
-		physicsPtr.reset(new JumpPhysics(frameSize.width / 10, 42,7));
+		BoundedphysicsPtr.reset(new JumpPhysics(frameSize.width / 10, 42,7));
 		// @4: TODO
 		break;
 	case HERO_JUMP_LEFT:
-		physicsPtr.reset(new JumpPhysics(-frameSize.width / 10, 42, 7));
+		BoundedphysicsPtr.reset(new JumpPhysics(-frameSize.width / 10, 42, 7));
 		// @4: TODO
 		break;
 	default:
 		throw std::exception("Unknown physics state!");
 	}
-	IPhysicsComponentPtr BoundedphysicsPtr(new BoundedPhysicsDecorator(physicsPtr));
 
 	return make_shared<EntityState>(graphicsPtr, BoundedphysicsPtr);
 }
@@ -101,19 +101,26 @@ EntityPtr createHero(std::string const & rootAnimationsFolder)
 	runRight->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_LEFT }, idle);
 	runRight->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_DOWN }, duck);
 	runRight->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_UP }, jump);
+	runRight->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
 
 	jump->addState(Event{ EventSenders::SENDER_ENTITY_STATE, EventTypes::EVENT_PHYSICS, EventCodes::ENTITY_PHYSICS_FINISHED }, idle);
+	jump->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
 
 	jumpLeft->addState(Event{ EventSenders::SENDER_ENTITY_STATE, EventTypes::EVENT_PHYSICS, EventCodes::ENTITY_PHYSICS_FINISHED }, idle);
+	jumpLeft->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
 
 	runLeft->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_RIGHT }, idle);
 	runLeft->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_UP }, jumpLeft);
+	runLeft->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
 
 	duck->addState(Event{ EventSenders::SENDER_ENTITY_STATE, EventTypes::EVENT_GRAPHICS, EventCodes::ENTITY_FINISHED_ANIMATION }, stayDuck);
+	duck->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
 
 	stayDuck->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_UP }, standAfterDuck);
+	stayDuck->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
 
 	standAfterDuck->addState(Event{ EventSenders::SENDER_ENTITY_STATE, EventTypes::EVENT_GRAPHICS, EventCodes::ENTITY_FINISHED_ANIMATION }, idle);
+	standAfterDuck->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
 
 	// ... 
 	EntityPtr hero(new Entity(idle));

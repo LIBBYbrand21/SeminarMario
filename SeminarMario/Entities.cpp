@@ -45,6 +45,11 @@ IPhysicsComponentPtr const& EntityState::getPhysics() const
 	return _physicsPtr;
 }
 
+void EntityState::setPhysics(IPhysicsComponentPtr physics)
+{
+	_physicsPtr = physics;
+}
+
 void EntityState::reset(cv::Point const& TL)
 {
 	_graphicsPtr->reset();
@@ -70,7 +75,13 @@ void Entity::onNotify(Event const& e)
 		&&
 		e.type == EventTypes::EVENT_TIMER
 		&&
-		e.code == EventCodes::TIME_TICK)
+		e.code == EventCodes::TIME_TICK ||
+
+		e.sender == EventSenders::SENDER_ENTITY_STATE
+		&&
+		e.type == EventTypes::EVENT_PHYSICS
+		&&
+		e.code == EventCodes::COLLISION_WITH_ENEMY)
 	{
 		_state->update();
 	}
@@ -94,9 +105,9 @@ void Entity::draw(cv::Mat& canvas)
 	_state->draw(canvas);
 }
 
-//void Entity::checkCollision(EntityPtr& other) {
-//	if (this->_state->getPhysics()->checkCollision(other->_state->getPhysics())) {
-//		Notify(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY });
-//		//_state->setPhysics(make_shared<NonCollidingPhysicsDecorator>(_state->getPhysics()));
-//	}
-//}
+void Entity::checkCollision(EntityPtr& other) {
+	if (this->_state->getPhysics()->checkCollision(other->_state->getPhysics())) {
+		Notify(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY });
+		_state->setPhysics(make_shared<NonCollidingPhysicsDecorator>(_state->getPhysics()));
+	}
+}
