@@ -53,10 +53,12 @@ int main()
 
 	Timer timer(/*freq. ms=*/100);
 	hero->Register(live);
+	hero->Register(hero);
 	//hero->Register(slime);
 	hero->Register(score);
 	timer.Register(slime);
 	timer.Register(hero);
+	timer.Register(apple);
 
 	bool isToExit = false;
 	while (false == isToExit)

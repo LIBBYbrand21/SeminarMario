@@ -66,6 +66,24 @@ public:
 
 };
 
+class CollidingPhysicsDecorator : public IPhysicsComponent
+{
+private:
+	IPhysicsComponentPtr _base;
+
+public:
+	CollidingPhysicsDecorator(IPhysicsComponentPtr base);
+
+	// Inherited via IPhysicsComponent
+	virtual void reset(cv::Point const& tl) override;
+	virtual bool update(cv::Mat const& collisionMask) override;
+	virtual cv::Mat const& getCollisionMask() const override;
+	virtual bool checkCollision(std::shared_ptr<IPhysicsComponent> const& other) const override;
+	virtual cv::Point const& getTL() const override;
+
+};
+
+
 class BoundedPhysicsDecorator : public IPhysicsComponent
 {
 private:

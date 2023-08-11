@@ -17,7 +17,8 @@ enum HeroStates {
 	HERO_STAY_DUCK, 
 	HERO_STAND_AFTER_DUCK, 
 	HERO_JUMP_RIGHT,
-	HERO_JUMP_LEFT
+	HERO_JUMP_LEFT,
+	HERO_FLICKERING
 };
 
 EntityStatePtr createHeroState(
@@ -36,47 +37,51 @@ EntityStatePtr createHeroState(
 		new SingleAnimationGraphics(animation, isCyclic));
 
 	IPhysicsComponentPtr physicsPtr = nullptr;
-	IPhysicsComponentPtr BoundedphysicsPtr(new BoundedPhysicsDecorator(physicsPtr));
 
 
 	Size frameSize = graphicsPtr->getCollisionMask().size();
 	switch (state)
 	{
 	case HERO_IDLE:
-		BoundedphysicsPtr.reset(new FixedWidgetPhysics());
+		physicsPtr.reset(new FixedWidgetPhysics());
 		break;
 	case HERO_RUN_RIGHT:
-		BoundedphysicsPtr.reset(new BoundedPhysicsDecorator(IPhysicsComponentPtr(new ConstVelocityPhysics(Point(frameSize.width / 10, 0)))));
+		physicsPtr.reset(new BoundedPhysicsDecorator(IPhysicsComponentPtr(new ConstVelocityPhysics(Point(frameSize.width / 10, 0)))));
 		break;
 	case HERO_RUN_LEFT:
 		// @4: TODO
-		BoundedphysicsPtr.reset(new BoundedPhysicsDecorator(IPhysicsComponentPtr(new ConstVelocityPhysics(Point(-frameSize.width / 10, 0)))));
+		physicsPtr.reset(new BoundedPhysicsDecorator(IPhysicsComponentPtr(new ConstVelocityPhysics(Point(-frameSize.width / 10, 0)))));
 		break;
 	case HERO_DUCK:
-		BoundedphysicsPtr.reset(new FixedWidgetPhysics());
+		physicsPtr.reset(new FixedWidgetPhysics());
 		// @4: TODO
 		break;
 	case HERO_STAY_DUCK:
-		BoundedphysicsPtr.reset(new FixedWidgetPhysics());
+		physicsPtr.reset(new FixedWidgetPhysics());
 		// @4: TODO
 		break;
 	case HERO_STAND_AFTER_DUCK:
-		BoundedphysicsPtr.reset(new FixedWidgetPhysics());
+		physicsPtr.reset(new FixedWidgetPhysics());
 		// @4: TODO
 		break;
 	case HERO_JUMP_RIGHT:
-		BoundedphysicsPtr.reset(new JumpPhysics(frameSize.width / 10, 42,7));
+		physicsPtr.reset(new BoundedPhysicsDecorator(IPhysicsComponentPtr(new JumpPhysics(frameSize.width / 10, 42,7))));
 		// @4: TODO
 		break;
 	case HERO_JUMP_LEFT:
-		BoundedphysicsPtr.reset(new JumpPhysics(-frameSize.width / 10, 42, 7));
+		physicsPtr.reset(new BoundedPhysicsDecorator(IPhysicsComponentPtr(new JumpPhysics(-frameSize.width / 10, 42, 7))));
 		// @4: TODO
+		break;
+	case HERO_FLICKERING:
+		physicsPtr.reset(new BoundedPhysicsDecorator(IPhysicsComponentPtr(new NonCollidingPhysicsDecorator(IPhysicsComponentPtr(new ConstVelocityPhysics(Point(frameSize.width / 10, 0)))))));
+		graphicsPtr = IGraphicsComponentPtr(new FlickeringDecorator(graphicsPtr));
 		break;
 	default:
 		throw std::exception("Unknown physics state!");
 	}
+	//IPhysicsComponentPtr BoundedphysicsPtr(new BoundedPhysicsDecorator(physicsPtr));
 
-	return make_shared<EntityState>(graphicsPtr, BoundedphysicsPtr);
+	return make_shared<EntityState>(graphicsPtr, physicsPtr);
 }
 
 EntityPtr createHero(std::string const & rootAnimationsFolder)
@@ -93,34 +98,40 @@ EntityPtr createHero(std::string const & rootAnimationsFolder)
 	auto stayDuck = createHeroState(root / "duckStay", HeroStates::HERO_STAY_DUCK);
 	auto standAfterDuck = createHeroState(root / "standAfterDuck", HeroStates::HERO_STAND_AFTER_DUCK);
 	auto jumpLeft = createHeroState(root / "jumpLeft", HeroStates::HERO_JUMP_LEFT);
+	auto flickering = createHeroState(root / "runRight", HeroStates::HERO_FLICKERING);
 
 	//  @4: TOOD: add all events here... 
 	idle->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_RIGHT }, runRight);
 	idle->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_LEFT }, runLeft);
+	idle->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, flickering);
+
+	flickering->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_RIGHT }, runRight);
+	flickering->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_LEFT }, runLeft);
+	flickering->addState(Event{ EventSenders::SENDER_ENTITY_STATE, EventTypes::EVENT_PHYSICS, EventCodes::ENTITY_PHYSICS_FINISHED }, idle);
 
 	runRight->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_LEFT }, idle);
 	runRight->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_DOWN }, duck);
 	runRight->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_UP }, jump);
-	runRight->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
+	runRight->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, flickering);
 
 	jump->addState(Event{ EventSenders::SENDER_ENTITY_STATE, EventTypes::EVENT_PHYSICS, EventCodes::ENTITY_PHYSICS_FINISHED }, idle);
-	jump->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
+	jump->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, flickering);
 
 	jumpLeft->addState(Event{ EventSenders::SENDER_ENTITY_STATE, EventTypes::EVENT_PHYSICS, EventCodes::ENTITY_PHYSICS_FINISHED }, idle);
-	jumpLeft->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
+	jumpLeft->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, flickering);
 
 	runLeft->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_RIGHT }, idle);
 	runLeft->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_UP }, jumpLeft);
-	runLeft->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
+	runLeft->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, flickering);
 
 	duck->addState(Event{ EventSenders::SENDER_ENTITY_STATE, EventTypes::EVENT_GRAPHICS, EventCodes::ENTITY_FINISHED_ANIMATION }, stayDuck);
-	duck->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
+	duck->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, flickering);
 
 	stayDuck->addState(Event{ EventSenders::SENDER_KEYBOARD, EventTypes::EVENT_KEY_PRESSED, EventCodes::KEY_UP }, standAfterDuck);
-	stayDuck->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
+	stayDuck->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, flickering);
 
 	standAfterDuck->addState(Event{ EventSenders::SENDER_ENTITY_STATE, EventTypes::EVENT_GRAPHICS, EventCodes::ENTITY_FINISHED_ANIMATION }, idle);
-	standAfterDuck->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, idle);
+	standAfterDuck->addState(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY }, flickering);
 
 	// ... 
 	EntityPtr hero(new Entity(idle));
@@ -128,6 +139,7 @@ EntityPtr createHero(std::string const & rootAnimationsFolder)
 	runRight->Register(hero);
 	jump->Register(hero);
 	jumpLeft->Register(hero);
+	flickering->Register(hero);
 	//  @4: TOOD: add all states here... 
 	runLeft->Register(hero);
 	duck->Register(hero);

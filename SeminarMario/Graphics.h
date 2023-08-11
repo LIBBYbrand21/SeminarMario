@@ -91,9 +91,10 @@ class AppleGraphics : public IGraphicsComponent
 {
 protected:
 	Frame _singleApple; 
+	bool _isActive;
 
 public:
-	AppleGraphics(std::string const& folder);
+	AppleGraphics(std::string const& folder,bool isActive);
 
 public:
 	virtual cv::Mat getCollisionMask();
@@ -108,6 +109,22 @@ private:
 	cv::Point _point;
 public:
 	EmptyGraphicsDecorator();
+	// Inherited via IPhysicsComponent
+public:
+	virtual cv::Mat getCollisionMask();
+	virtual void draw(cv::Mat& canvas, cv::Point const& topLeft);
+	virtual void reset(int code = 0) override;
+	virtual bool update();
+};
+
+class FlickeringDecorator : public IGraphicsComponent
+{
+private:
+	IGraphicsComponentPtr _base;
+	cv::Point _point;
+	int i;
+public:
+	FlickeringDecorator(IGraphicsComponentPtr _base);
 	// Inherited via IPhysicsComponent
 public:
 	virtual cv::Mat getCollisionMask();
