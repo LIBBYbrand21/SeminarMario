@@ -33,7 +33,6 @@ int main()
 	Mat background = imread(R"(../Animations/background.png)", IMREAD_UNCHANGED);
 	resize(background, background, cv::Size(), 0.79, 0.75);
 	
-
 	EntityPtr live = createLive(R"(../Animations/heart.png)");
 	live->reset(Point(background.size().width * 0.99, background.size().height * 0.03));
 

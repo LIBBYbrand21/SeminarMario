@@ -1,7 +1,20 @@
 #include "Timer.h"
 #include "opencv2/opencv.hpp"
 #include "Config.h"
+using namespace std;
 
+TimerPtr Timer::instance{nullptr};
+
+mutex Timer::mutex_;
+
+TimerPtr Timer::GetInstance(size_t frequency_ms) {
+	//lock_guard<mutex> lock(mutex_);
+	if (instance == nullptr)
+	{
+		instance = new Timer(frequency_ms);
+	}
+	return instance;
+}
 Timer::Timer(size_t frequency_ms)
 	:_frequency_ms(frequency_ms)
 {

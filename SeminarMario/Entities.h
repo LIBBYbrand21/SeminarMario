@@ -22,7 +22,9 @@ public:
 	virtual std::shared_ptr<EntityState> tryModifyState(Event const& e) const;
 
 	IPhysicsComponentPtr const& getPhysics() const;
-	void setPhysics(IPhysicsComponentPtr physics);
+	void setPhysics(IPhysicsComponentPtr physics); 
+	IGraphicsComponentPtr const& getGraphics() const;
+	void setGraphics(IGraphicsComponentPtr graphics);
 	virtual void reset(cv::Point const& TL);
 
 	void draw(cv::Mat & canvas);

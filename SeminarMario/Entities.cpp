@@ -50,6 +50,16 @@ void EntityState::setPhysics(IPhysicsComponentPtr physics)
 	_physicsPtr = physics;
 }
 
+IGraphicsComponentPtr const& EntityState::getGraphics() const
+{
+	return _graphicsPtr;
+}
+
+void EntityState::setGraphics(IGraphicsComponentPtr graphics)
+{
+	_graphicsPtr = graphics;
+}
+
 void EntityState::reset(cv::Point const& TL)
 {
 	_graphicsPtr->reset();
@@ -108,6 +118,7 @@ void Entity::draw(cv::Mat& canvas)
 void Entity::checkCollision(EntityPtr& other) {
 	if (this->_state->getPhysics()->checkCollision(other->_state->getPhysics())) {
 		Notify(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY });
-		//_state->setPhysics(make_shared<NonCollidingPhysicsDecorator>(_state->getPhysics()));
+		_state->setPhysics(make_shared<NonCollidingPhysicsDecorator>(_state->getPhysics()));
+		_state->setGraphics(make_shared<FlickeringDecorator>(_state->getGraphics()));
 	}
 }
