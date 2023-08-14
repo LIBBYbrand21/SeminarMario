@@ -5,6 +5,7 @@
 #include "Config.h"
 
 #include <memory>
+#include "Timer.h"
 using namespace std;
 using namespace cv;
 
@@ -95,6 +96,20 @@ void Entity::onNotify(Event const& e)
 	{
 		_state->update();
 	}
+	if (e.sender == EventSenders::SENDER_TIMER
+		&&
+		e.type == EventTypes::EVENT_TIMER
+		&&
+		e.code == EventCodes::TIME_FLICKERING_FINISH)
+	{
+
+		//_state->setPhysics();
+		FlickeringDecorator* graphicsPtr = dynamic_cast<FlickeringDecorator*>(_state->getGraphics().get());
+		if (graphicsPtr != nullptr) {
+			_state->setPhysics(dynamic_cast<NonCollidingPhysicsDecorator*>(_state->getPhysics().get())->getBase());
+			_state->setGraphics(graphicsPtr->getBase());
+		}
+	}
 	
 	auto newStateCandidate = _state->tryModifyState(e);
 	
@@ -120,5 +135,7 @@ void Entity::checkCollision(EntityPtr& other) {
 		Notify(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY });
 		_state->setPhysics(make_shared<NonCollidingPhysicsDecorator>(_state->getPhysics()));
 		_state->setGraphics(make_shared<FlickeringDecorator>(_state->getGraphics()));
+		TimerPtr timer = Timer::GetInstance(100);
+		timer->setTimeToFlicering();
 	}
 }

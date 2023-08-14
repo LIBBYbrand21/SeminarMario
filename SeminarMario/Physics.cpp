@@ -134,39 +134,10 @@ Point const& NonCollidingPhysicsDecorator::getTL() const
 	return _base->getTL();
 }
 
-CollidingPhysicsDecorator::CollidingPhysicsDecorator(IPhysicsComponentPtr base)
-	:_base(base)
+IPhysicsComponentPtr NonCollidingPhysicsDecorator::getBase() const
 {
+	return _base;
 }
-
-void CollidingPhysicsDecorator::reset(cv::Point const& tl)
-{
-	_base->reset(tl);
-}
-
-bool CollidingPhysicsDecorator::update(cv::Mat const& collisionMask)
-{
-	return _base->update(collisionMask);
-	//if(checkCollision())
-		//Notify(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY });
-}
-
-Mat const& CollidingPhysicsDecorator::getCollisionMask() const
-{
-	return _base->getCollisionMask();
-}
-
-bool CollidingPhysicsDecorator::checkCollision(shared_ptr<IPhysicsComponent> const& other) const
-{
-	return _base->checkCollision(other);
-
-}
-
-Point const& CollidingPhysicsDecorator::getTL() const
-{
-	return _base->getTL();
-}
-
 
 BoundedPhysicsDecorator::BoundedPhysicsDecorator(IPhysicsComponentPtr base)
 	:_base(base), _bounds(Rect(0, 0, 1400, 1400)) 

@@ -131,4 +131,5 @@ public:
 	virtual void draw(cv::Mat& canvas, cv::Point const& topLeft);
 	virtual void reset(int code = 0) override;
 	virtual bool update();
+	IGraphicsComponentPtr getBase();
 };

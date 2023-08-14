@@ -7,11 +7,11 @@ class Timer : public Subject
 
 private:
 	static TimerPtr instance;
-	static std::mutex mutex_;
+	int timeToFlickering;
 
-//protected:
-	Timer(size_t frequency_ms) {}
-	~Timer() {}
+protected:
+	Timer(size_t frequency_ms);
+	//~Timer() {}
 	size_t _frequency_ms;
 
 public:
@@ -19,6 +19,8 @@ public:
 	//void operator=(const Timer &) = delete;
 	static TimerPtr GetInstance(size_t frequency_ms);
 	void tick();
+	bool isTimeToFlicering();
+	void setTimeToFlicering();
 };
 
 typedef std::shared_ptr<Timer> TimerPtr;

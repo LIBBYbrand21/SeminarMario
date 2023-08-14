@@ -168,7 +168,7 @@ void AppleGraphics::draw(cv::Mat& canvas, cv::Point const& topLeft)
 }
 void AppleGraphics::reset(int code)
 {
-	//_isActive = false;
+	_isActive = false;
 }
 bool AppleGraphics::update()
 {
@@ -187,8 +187,7 @@ void FlickeringDecorator::draw(cv::Mat& canvas, cv::Point const& topLeft)
 {
 	if (i % 2 == 0)
 		_base->draw(canvas, topLeft);
-	if (i > 20)i = 0;
-	else i++;
+	i++;
 }
 void FlickeringDecorator::reset(int code)
 {
@@ -197,6 +196,10 @@ void FlickeringDecorator::reset(int code)
 }
 bool FlickeringDecorator::update()
 {
-	if (i == 20)return true;
 	return _base->update();
+}
+
+IGraphicsComponentPtr FlickeringDecorator::getBase()
+{
+	return _base;
 }

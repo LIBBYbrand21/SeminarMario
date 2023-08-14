@@ -50,21 +50,20 @@ int main()
 	slime->reset(Point(background.size().width * 2 / 3, background.size().height * 4 / 5));
 
 
-	Timer timer(/*freq. ms=*/100);
+	TimerPtr timer=Timer::GetInstance(/*freq. ms=*/100);
 	hero->Register(live);
-	hero->Register(hero);
 	//hero->Register(slime);
 	hero->Register(score);
-	timer.Register(slime);
-	timer.Register(hero);
-	timer.Register(apple);
+	timer->Register(slime);
+	timer->Register(hero);
+	timer->Register(apple);
 
 	bool isToExit = false;
 	while (false == isToExit)
 	{
 		Mat canvas = background.clone();
 
-		timer.tick();
+		timer->tick();
 		slime->draw(canvas);
 		hero->draw(canvas);
 		hero->checkCollision(slime);
