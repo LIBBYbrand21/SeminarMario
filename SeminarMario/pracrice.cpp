@@ -52,7 +52,6 @@ int main()
 
 	TimerPtr timer=Timer::GetInstance(/*freq. ms=*/100);
 	hero->Register(live);
-	//hero->Register(slime);
 	hero->Register(score);
 	timer->Register(slime);
 	timer->Register(hero);
@@ -66,14 +65,12 @@ int main()
 		timer->tick();
 		slime->draw(canvas);
 		hero->draw(canvas);
-		hero->checkCollision(slime);
 		live->draw(canvas);
 		score->draw(canvas);
 		apple->draw(canvas);
+		hero->checkCollision(slime);
 
 		imshow("test", canvas);
-//		slime->checkCollision(hero);
-
 	}
 
 	return 0;

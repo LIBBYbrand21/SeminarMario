@@ -168,7 +168,6 @@ void AppleGraphics::draw(cv::Mat& canvas, cv::Point const& topLeft)
 }
 void AppleGraphics::reset(int code)
 {
-	_isActive = false;
 }
 bool AppleGraphics::update()
 {

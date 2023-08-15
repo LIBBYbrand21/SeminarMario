@@ -100,10 +100,10 @@ void Entity::onNotify(Event const& e)
 		&&
 		e.type == EventTypes::EVENT_TIMER
 		&&
-		e.code == EventCodes::TIME_FLICKERING_FINISH)
+		e.code == EventCodes::TIME_FLICKERING_FINISH ||
+		!Timer::GetInstance(100)->isTimeToFlicering())
 	{
 
-		//_state->setPhysics();
 		FlickeringDecorator* graphicsPtr = dynamic_cast<FlickeringDecorator*>(_state->getGraphics().get());
 		if (graphicsPtr != nullptr) {
 			_state->setPhysics(dynamic_cast<NonCollidingPhysicsDecorator*>(_state->getPhysics().get())->getBase());
@@ -132,10 +132,11 @@ void Entity::draw(cv::Mat& canvas)
 
 void Entity::checkCollision(EntityPtr& other) {
 	if (this->_state->getPhysics()->checkCollision(other->_state->getPhysics())) {
-		Notify(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY });
+		if (!Timer::GetInstance(100)->isTimeToFlicering()) {
+			Notify(Event{ EventSenders::SENDER_ENTITY_STATE,EventTypes::EVENT_PHYSICS,EventCodes::COLLISION_WITH_ENEMY });
+			Timer::GetInstance(100)->setTimeToFlicering();
+		}
 		_state->setPhysics(make_shared<NonCollidingPhysicsDecorator>(_state->getPhysics()));
 		_state->setGraphics(make_shared<FlickeringDecorator>(_state->getGraphics()));
-		TimerPtr timer = Timer::GetInstance(100);
-		timer->setTimeToFlicering();
 	}
 }

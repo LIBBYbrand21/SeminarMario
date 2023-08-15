@@ -7,7 +7,7 @@
 
 using namespace cv;
 using namespace std;
-namespace fs = std::filesystem;
+namespace fs = filesystem;
 
 enum HeroStates {
 	HERO_IDLE,
@@ -79,7 +79,7 @@ EntityStatePtr createHeroState(
 	return make_shared<EntityState>(graphicsPtr, physicsPtr);
 }
 
-EntityPtr createHero(std::string const& rootAnimationsFolder)
+EntityPtr createHero(string const& rootAnimationsFolder)
 {
 	fs::path root = rootAnimationsFolder;
 	auto idleFolder = root / "idle";

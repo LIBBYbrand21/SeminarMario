@@ -4,17 +4,16 @@
 using namespace cv;
 using namespace std;
 
-EntityStatePtr CreateAppleState(std::string const& path, bool isActive)
+EntityStatePtr CreateAppleState(string const& path, bool isActive)
 {
-	IGraphicsComponentPtr graphicsPtr
-	/*=make_shared<EmptyGraphicsDecorator>*/(
+	IGraphicsComponentPtr graphicsPtr(
 		new AppleGraphics(path, isActive));
-	IPhysicsComponentPtr physicsPtr(new JumpPhysics(10,42,7));
+	IPhysicsComponentPtr physicsPtr(new ConstVelocityPhysics(Point(3,3)));
 
 	return make_shared<EntityState>(graphicsPtr, physicsPtr);
 }
 
-EntityPtr createApple(std::string const& path)
+EntityPtr createApple(string const& path)
 {
 	EntityStatePtr appleActive = CreateAppleState(path, true);
 	EntityStatePtr appleNotActive = CreateAppleState(path, false);
